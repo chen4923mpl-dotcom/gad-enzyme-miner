@@ -1,0 +1,12 @@
+# GAD酶挖掘工具依赖
+# 只需要Python标准库，无需额外依赖
+
+# 可选依赖（用于增强功能）
+# numpy>=1.21.0  # 用于数值计算
+# pandas>=1.3.0  # 用于数据处理
+# biopython>=1.78  # 用于生物信息学操作
+# matplotlib>=3.4.0  # 用于可视化
+# seaborn>=0.11.0  # 用于统计可视化
+
+# 基本版本只需要以下Python标准库：
+# re, json, argparse, os, sys, pathlib

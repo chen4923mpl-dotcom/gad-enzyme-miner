@@ -1,0 +1,17 @@
+# 测试结果
+test_results/
+
+# 下载的序列
+gad_sequences_db/
+real_gad_sequences/
+
+# Python缓存
+__pycache__/
+*.pyc
+
+# 虚拟环境
+gad_venv/
+venv/
+
+# 系统文件
+*.log

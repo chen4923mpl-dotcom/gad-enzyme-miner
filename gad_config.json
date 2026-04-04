@@ -1,0 +1,95 @@
+{
+  "gad_features": {
+    "conserved_motifs": [
+      // GAD酶的保守区域（来自多个物种）
+      {
+        "name": "PLP-binding_site",
+        "pattern": "G[ST]G[KR][DE]",
+        "description": "PLP结合位点的保守模式"
+      },
+      {
+        "name": "active_site_catalytic",
+        "pattern": "[KR][ST][DE]X[KR]",
+        "description": "催化活性位点的特征"
+      },
+      {
+        "name": "glutamate_binding",
+        "pattern": "[FY]X[KR][DE]",
+        "description": "谷氨酸底物结合区域"
+      }
+    ],
+    
+    "structural_features": {
+      "typical_length_range": [450, 600],
+      "amino_acid_composition": {
+        "hydrophobic_min": 0.25,
+        "hydrophilic_min": 0.35,
+        "charged_min": 0.15,
+        "glycine_rich": true
+      },
+      "domain_patterns": [
+        "Pfam: PF00291",  // 谷氨酸脱羧酶域
+        "SMART: SM00869", // PLP-dependent酶
+        "PROSITE: PS00165" // 脱羧酶签名
+      ]
+    },
+    
+    "functional_characteristics": {
+      "cofactor": "Pyridoxal 5'-phosphate (PLP)",
+      "reaction": "L-glutamate → GABA",
+      "optimal_ph": 4.0,
+      "optimal_temperature": 37
+    },
+    
+    "reference_sequences": {
+      "organisms": [
+        "Escherichia coli",
+        "Lactobacillus brevis",
+        "Arabidopsis thaliana",
+        "Mus musculus",
+        "Homo sapiens"
+      ],
+      "database_sources": [
+        "UniProt",
+        "NCBI",
+        "Pfam",
+        "InterPro"
+      ]
+    }
+  },
+  
+  "analysis_methods": {
+    "motif_search": {
+      "thresholds": {
+        "minimum_matches": 2,
+        "score_threshold": 0.3
+      },
+      "allow_fuzzy_matches": true,
+      "gap_tolerance": 3
+    },
+    "homology_search": {
+      "tools": ["diamond", "blastp"],
+      "parameters": {
+        "evalue_cutoff": 1e-3,
+        "identity_cutoff": 25,
+        "alignment_length": 100
+      }
+    },
+    "structural_prediction": {
+      "tools": ["alphafold", "deepfold"],
+      "confidence_threshold": 0.7,
+      "feature_extraction": ["secondary_structure", "cofactor_binding", "active_site"]
+    },
+    "functional_annotation": {
+      "tools": ["interproscan", "hmmer"],
+      "databases": ["Pfam", "SMART", "PROSITE", "CDD"]
+    }
+  },
+  
+  "integration_weights": {
+    "motif_score_weight": 0.30,
+    "homology_score_weight": 0.20,
+    "structural_score_weight": 0.25,
+    "functional_score_weight": 0.25
+  }
+}
