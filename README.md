@@ -4,7 +4,8 @@
 这是一个专门用于在全基因组中挖掘GAD酶（谷氨酸脱羧酶）的工具。考虑到GAD酶在不同物种中序列和结构高度不保守的特点，本工具采用了多种互补的挖掘策略，以提高识别准确率。
 
 ## 特点
-- **多策略挖掘**：结合保守模式搜索、结构特征分析和同源性比较
+- **增强保守模式识别**：扩展了23个保守模式，解决模式匹配得分为0的问题
+- **多策略挖掘**：结合保守模式搜索、结构特征分析、同源性比较和功能域分析
 - **灵活配置**：可调节不同特征的权重和阈值
 - **无需外部依赖**：简化版只需要Python标准库
 - **实时反馈**：提供详细的分析报告和候选序列列表
@@ -65,11 +66,15 @@ Protein_ID    Length    Total_Score    Structural_Score    Motif_Score    Homolo
 
 ## 算法原理
 
-### 1. 保守模式搜索
+### 1. 保守模式搜索（v2版本增强）
 基于GAD酶的已知保守区域：
-- PLP结合位点：G[ST]G[KR][DE]
-- 活性位点：[KR][ST][DE]X[KR]
-- 谷氨酸结合位点：[FY]X[KR][DE]
+- PLP结合位点（3个变体）：G[ST]G[KR][DE]，G[ST]G[KR]G，G[ST]G[KR]K
+- 活性位点（3个变体）：[KR][ST][DE]X[KR]，K[ST]E[KR]，[KR]S[DE][KR]
+- 谷氨酸底物结合位点（3个变体）：[FY]X[KR][DE]，Y[KR][DE]X，F[KR][DE]X
+- GAD酶的典型保守序列：KK[DE]，KKD，KKE
+- 功能域特征（基于Pfam PF00291）：[KR][DE]X[KR][DE]，[FY][KR]X[DE]，G[ST][KR]X[DE]
+- 物种特异性保守模式：Ecoli-GAD-motif，Lactobacillus-GAD-motif，Human-GAD-motif
+- 高级保守模式：[KR][DE]X[KR][DE]X[KR]，[FY][KR][DE]X[KR][DE]，G[ST][KR][DE]X[KR][DE]
 
 ### 2. 结构特征分析
 基于GAD酶的物理特性：
@@ -84,28 +89,44 @@ Protein_ID    Length    Total_Score    Structural_Score    Motif_Score    Homolo
 - Bacillus subtilis Gad
 - Listeria monocytogenes Gad
 - Salmonella enterica Gad
-- Human GAD67/GAD65
-- Arabidopsis Gad
-- Mouse Gad67/Gad65
+- Human Gad1/Gad2 (GAD67/GAD65)
+- Arabidopsis Gad1
+- Mouse Gad67
 
-### 4. 综合评分系统
+### 4. 功能域分析
+基于Pfam、SMART数据库的功能域模式：
+- GAD-domain: [KR]{2}[DE]{2}[KR]{2}
+- PLP-binding-domain: G[ST]G[KR][DE]X[KR][DE]
+- active-site-domain: [KR][ST][DE]X[KR]X[KR][DE]
+- glutamate-binding-domain: [FY]X[KR][DE]X[KR][DE]
+
+### 5. 综合评分系统（v2版本优化）
 综合所有方法的加权评分：
 ```
-Total Score = Structural_score * 0.4 + Motif_score * 0.3 + Homology_score * 0.3
+Total Score = Structural_score * 0.35 + Motif_score * 0.25 + Homology_score * 0.25 + Domain_score * 0.15
 ```
 
-## 针对GAD酶不保守特征的优化
+## 针对GAD酶不保守特征的优化（v2版本）
 
-### 1. 多模式搜索
-使用多个保守模式而非单一模式，增加识别范围
+### 1. 扩展保守模式
+从8个模式扩展到23个模式，提高模式匹配能力
 
-### 2. 宽松的阈值
+### 2. 功能域分析
+添加基于Pfam数据库的功能域模式匹配
+
+### 3. 权重优化
+调整评分权重：结构评分0.35，模式评分0.25，同源性评分0.25，功能域评分0.15
+
+### 4. 核心模式识别
+特别标记核心模式匹配（权重≥3），提高识别准确性
+
+### 5. 额外评分机制
+如果匹配到核心模式，额外增加分数，提高候选质量
+
+### 6. 宽松的阈值
 设置较低的相似度阈值（25%）以识别更多候选
 
-### 3. 结构特征权重
-结构特征权重更高（0.4），因为物理特性在不同物种中相对保守
-
-### 4. 参考序列多样性
+### 7. 参考序列多样性
 包含多种不同菌株的参考序列，提高识别能力
 
 ## 注意事项

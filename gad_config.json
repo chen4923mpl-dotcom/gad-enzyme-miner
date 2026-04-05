@@ -1,21 +1,180 @@
 {
   "gad_features": {
     "conserved_motifs": [
-      // GAD酶的保守区域（来自多个物种）
+      // PLP结合位点（基于多种GAD酶的保守模式）
       {
-        "name": "PLP-binding_site",
+        "name": "PLP-binding-core",
         "pattern": "G[ST]G[KR][DE]",
-        "description": "PLP结合位点的保守模式"
+        "description": "PLP结合位点的核心模式",
+        "weight": 3
       },
       {
-        "name": "active_site_catalytic",
+        "name": "PLP-binding-variant1",
+        "pattern": "G[ST]G[KR]G",
+        "description": "PLP结合位点的变体1",
+        "weight": 2
+      },
+      {
+        "name": "PLP-binding-variant2",
+        "pattern": "G[ST]G[KR]K",
+        "description": "PLP结合位点的变体2",
+        "weight": 2
+      },
+      
+      // 催化活性位点模式
+      {
+        "name": "active-site-1",
         "pattern": "[KR][ST][DE]X[KR]",
-        "description": "催化活性位点的特征"
+        "description": "催化活性位点模式1",
+        "weight": 3
       },
       {
-        "name": "glutamate_binding",
+        "name": "active-site-2",
+        "pattern": "K[ST]E[KR]",
+        "description": "催化活性位点模式2",
+        "weight": 2
+      },
+      {
+        "name": "active-site-3",
+        "pattern": "[KR]S[DE][KR]",
+        "description": "催化活性位点模式3",
+        "weight": 2
+      },
+      
+      // 谷氨酸底物结合位点
+      {
+        "name": "glutamate-binding-core",
         "pattern": "[FY]X[KR][DE]",
-        "description": "谷氨酸底物结合区域"
+        "description": "谷氨酸底物结合核心模式",
+        "weight": 3
+      },
+      {
+        "name": "glutamate-binding-variant1",
+        "pattern": "Y[KR][DE]X",
+        "description": "谷氨酸底物结合变体1",
+        "weight": 2
+      },
+      {
+        "name": "glutamate-binding-variant2",
+        "pattern": "F[KR][DE]X",
+        "description": "谷氨酸底物结合变体2",
+        "weight": 2
+      },
+      
+      // GAD酶的典型保守序列（基于NCBI和UniProt数据库）
+      {
+        "name": "GAD-conserved-KKDE",
+        "pattern": "KK[DE]",
+        "description": "GAD酶保守序列KKDE",
+        "weight": 1
+      },
+      {
+        "name": "GAD-conserved-KKD",
+        "pattern": "KKD",
+        "description": "GAD酶保守序列KKD",
+        "weight": 1
+      },
+      {
+        "name": "GAD-conserved-KKE",
+        "pattern": "KKE",
+        "description": "GAD酶保守序列KKE",
+        "weight": 1
+      },
+      
+      // 功能域特征（基于Pfam PF00291）
+      {
+        "name": "pfam-motif-1",
+        "pattern": "[KR][DE]X[KR][DE]",
+        "description": "Pfam功能域模式1",
+        "weight": 2
+      },
+      {
+        "name": "pfam-motif-2",
+        "pattern": "[FY][KR]X[DE]",
+        "description": "Pfam功能域模式2",
+        "weight": 2
+      },
+      {
+        "name": "pfam-motif-3",
+        "pattern": "G[ST][KR]X[DE]",
+        "description": "Pfam功能域模式3",
+        "weight": 2
+      },
+      
+      // 已知GAD酶的保守区域
+      {
+        "name": "Ecoli-GAD-motif",
+        "pattern": "[KR]X[KR][DE]X[KR]",
+        "description": "大肠杆菌GAD酶保守模式",
+        "weight": 2
+      },
+      {
+        "name": "Lactobacillus-GAD-motif",
+        "pattern": "K[KR]X[DE]K",
+        "description": "乳酸杆菌GAD酶保守模式",
+        "weight": 2
+      },
+      {
+        "name": "Human-GAD-motif",
+        "pattern": "[KR][ST][DE][KR]X",
+        "description": "人类GAD酶保守模式",
+        "weight": 2
+      },
+      
+      // 高级保守模式（长度较长）
+      {
+        "name": "GAD-long-1",
+        "pattern": "[KR][DE]X[KR][DE]X[KR]",
+        "description": "GAD酶高级保守模式1",
+        "weight": 3
+      },
+      {
+        "name": "GAD-long-2",
+        "pattern": "[FY][KR][DE]X[KR][DE]",
+        "description": "GAD酶高级保守模式2",
+        "weight": 3
+      },
+      {
+        "name": "GAD-long-3",
+        "pattern": "G[ST][KR][DE]X[KR][DE]",
+        "description": "GAD酶高级保守模式3",
+        "weight": 3
+      },
+      
+      // 全局保守特征
+      {
+        "name": "charged-cluster",
+        "pattern": "[KR]{3,}",
+        "description": "带电氨基酸簇",
+        "weight": 1
+      },
+      {
+        "name": "hydrophobic-cluster",
+        "4模式": "[LVIFMW]{4,}",
+        "description": "疏水氨基酸簇",
+        "weight": 1
+      },
+      
+      // 基于氨基酸组成
+      {
+        "name": "charged-residues",
+        "pattern": "[KR][KR][KR]",
+        "description": "带电氨基酸模式",
+        "weight": 1
+      },
+      {
+        "name": "polar-residues",
+        "pattern": "[NQSTY][NQSTY][NQSTY]",
+        "description": "极性氨基酸模式",
+        "weight": 1
+      },
+      
+      // C末端保守模式
+      {
+        "name": "C-terminal-motif",
+        "pattern": "[KR][KR][DE][KR]",
+        "description": "C末端保守模式",
+        "weight": 2
       }
     ],
     
